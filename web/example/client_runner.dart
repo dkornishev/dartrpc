@@ -16,7 +16,7 @@ void loadModels(MouseEvent event) {
 
   sw.start();
   if(service == null)  {
-    service = proxify(ModelProvider);
+    service = proxify(ModelProvider, "ws://127.0.0.1:8080/models");
   }
 
   var model = new Model()

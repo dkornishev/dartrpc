@@ -8,8 +8,8 @@ import "transport.dart";
 
 Map _requests = {};
 
-proxify(type) {
-  return new _DynamicProxy(type);
+proxify(Type type, String uri) {
+  return new _DynamicProxy(type, uri);
 }
 
 /**
@@ -18,10 +18,11 @@ proxify(type) {
  */
 class _DynamicProxy {
   Type _type;
+  String _uri;
   WebSocket _ws;
 
-  _DynamicProxy(this._type) {
-    _ws = new WebSocket("ws://127.0.0.1:8080/ws");
+  _DynamicProxy(this._type, this._uri) {
+    _ws = new WebSocket(_uri);
     _ws.onMessage.listen((MessageEvent event) {
       ResponseEnvelope env = decode(event.data);
 
