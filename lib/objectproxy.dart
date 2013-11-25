@@ -4,7 +4,7 @@ import 'dart:html';
 import "dart:mirrors";
 import "dart:async";
 
-import "dto.dart";
+import "transport.dart";
 
 Map _requests = {};
 
@@ -23,7 +23,6 @@ class _DynamicProxy {
   _DynamicProxy(this._type) {
     _ws = new WebSocket("ws://127.0.0.1:8080/ws");
     _ws.onMessage.listen((MessageEvent event) {
-      print(event.data);
       ResponseEnvelope env = decode(event.data);
 
       Completer comp = _requests[env.inResponseTo];
@@ -43,7 +42,7 @@ class _DynamicProxy {
 
     var completer = new Completer();
 
-    var callback = () {
+    var sendRequest = () {
       InvocationDTO command = new InvocationDTO();
 
       command.owner = library;
@@ -58,13 +57,12 @@ class _DynamicProxy {
     };
 
     if(_ws.readyState == WebSocket.OPEN) {
-      callback();
+      sendRequest();
     } else {
       _ws.onOpen.listen((_) {
-        callback();
+        sendRequest();
       });
     }
-
 
     return completer.future;
   }

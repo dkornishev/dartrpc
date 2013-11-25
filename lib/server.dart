@@ -5,7 +5,7 @@ import "dart:mirrors";
 import "dart:isolate";
 import "dart:async";
 
-import "dto.dart";
+import "transport.dart";
 
 List _connections = [];
 Map _handlers = {};
