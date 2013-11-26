@@ -1,9 +1,11 @@
-library object_proxy_shared;
+library remote_shared;
 
+import "dart:mirrors";
 import "dart:convert";
 import 'package:serialization/serialization.dart';
 
 Serialization _ser;
+Map _handlers = {};
 
 String encode(object) {
   _init();
@@ -15,6 +17,23 @@ Object decode(input) {
   _init();
 
   return _ser.read(JSON.decode(input));
+}
+
+process(data) {
+
+    InvocationDTO dto = decode(data);
+
+    ClassMirror cm = currentMirrorSystem().findLibrary(dto.owner).declarations[dto.type];
+
+    if(!_handlers.containsKey(cm.simpleName)) {
+     _handlers[cm.simpleName] = cm.newInstance(new Symbol(""), []);
+    }
+
+    InstanceMirror im = _handlers[cm.simpleName];
+
+    var resp = im.invoke(dto.function, dto.positionalParams, dto.namedParams);
+
+    return encode(new ResponseEnvelope.newInstance(dto.requestId, resp.reflectee));
 }
 
 _init() {

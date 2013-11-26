@@ -1,7 +1,7 @@
 import 'dart:html';
 
-import '../../lib/objectproxy.dart';
-import "model.dart";
+import '../../lib/remote_client.dart';
+import 'model.dart';
 import 'dart:async';
 
 var service;
@@ -16,7 +16,7 @@ void loadModels(MouseEvent event) {
 
   sw.start();
   if(service == null)  {
-    service = proxify(ModelProvider, "ws://127.0.0.1:8080/models");
+    service = runRemote(ModelProvider, "ws://127.0.0.1:8080/models");
   }
 
   var model = new Model()

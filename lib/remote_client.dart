@@ -1,4 +1,4 @@
-library object_proxy_client;
+library remote_client;
 
 import 'dart:html';
 import "dart:mirrors";
@@ -8,7 +8,7 @@ import "transport.dart";
 
 Map _requests = {};
 
-proxify(Type type, String uri) {
+runRemote(Type type, String uri) {
   return new _DynamicProxy(type, uri);
 }
 

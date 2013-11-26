@@ -1,6 +1,6 @@
 
-import '../../lib/server.dart';
-import "../../../dartrs/lib/dartrs.dart";
+import '../../lib/transport.dart';
+import "package:dartrs/dartrs.dart";
 import 'model.dart';
 
 void main() {

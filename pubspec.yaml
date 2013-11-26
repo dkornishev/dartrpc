@@ -2,5 +2,6 @@ name: objectProxy
 description: A sample web application
 dependencies:
   browser: any
+  serialization: ">= 0.9.0 < 0.10.0"
+dev_dependencies:
   dartrs: any
-  serialization: 0.9.0
