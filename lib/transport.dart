@@ -10,6 +10,7 @@ Map _handlers = {};
 String encode(object) {
   _init();
 
+  print(JSON.encode(_ser.write(object)));
   return JSON.encode(_ser.write(object));
 }
 
@@ -21,7 +22,13 @@ Object decode(input) {
 
 process(data) {
 
+  var sw = new Stopwatch();
+  sw.start();
     InvocationDTO dto = decode(data);
+
+    var now = new DateTime.now().millisecondsSinceEpoch;
+
+    print("ELAPSED ${ now - dto.requestId}");
 
     ClassMirror cm = currentMirrorSystem().findLibrary(dto.owner).declarations[dto.type];
 
@@ -33,7 +40,11 @@ process(data) {
 
     var resp = im.invoke(dto.function, dto.positionalParams, dto.namedParams);
 
-    return encode(new ResponseEnvelope.newInstance(dto.requestId, resp.reflectee));
+    var result =  encode(new ResponseEnvelope.newInstance(dto.requestId, resp.reflectee));
+    sw.stop();
+    print("ELAPSED SERVER: ${sw.elapsedMilliseconds}");
+
+    return result;
 }
 
 _init() {
@@ -52,7 +63,9 @@ class InvocationDTO {
   List positionalParams = [];
   Map namedParams = {};
 
-  InvocationDTO();
+  InvocationDTO() {
+    requestId = new DateTime.now().millisecondsSinceEpoch;
+  }
 
   InvocationDTO.newInstance(this.owner, this.type, this.function, this.positionalParams, this.namedParams) {
     requestId = new DateTime.now().millisecondsSinceEpoch;

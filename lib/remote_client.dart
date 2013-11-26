@@ -8,7 +8,21 @@ import "transport.dart";
 
 Map _requests = {};
 
+WebSocket _ws;
+
 runRemote(Type type, String uri) {
+
+  if(_ws == null) {
+    _ws = new WebSocket(uri);
+    _ws.onMessage.listen((MessageEvent event) {
+      ResponseEnvelope env = decode(event.data);
+
+      Completer comp = _requests[env.inResponseTo];
+      _requests.remove(env.inResponseTo);
+      comp.complete(env.payload);
+    });
+  }
+
   return new _DynamicProxy(type, uri);
 }
 
@@ -19,25 +33,16 @@ runRemote(Type type, String uri) {
 class _DynamicProxy {
   Type _type;
   String _uri;
-  WebSocket _ws;
 
-  _DynamicProxy(this._type, this._uri) {
-    _ws = new WebSocket(_uri);
-    _ws.onMessage.listen((MessageEvent event) {
-      ResponseEnvelope env = decode(event.data);
-
-      Completer comp = _requests[env.inResponseTo];
-      _requests.remove(env.inResponseTo);
-      comp.complete(env.payload);
-    });
-  }
+  _DynamicProxy(this._type, this._uri);
 
   /**
    *  Transparently proxies calls to the server
    *  via websockets
    */
   noSuchMethod(Invocation inv) {
-
+    var sw = new Stopwatch();
+    sw.start();
     var library = reflectClass(_type).owner.simpleName;
     var typeName = reflectClass(_type).simpleName;
 
@@ -55,6 +60,9 @@ class _DynamicProxy {
       _ws.send(encode(command));
 
       _requests[command.requestId] = completer;
+      sw.stop();
+
+      print("SEND ENDED IN: ${sw.elapsedMilliseconds}");
     };
 
     if(_ws.readyState == WebSocket.OPEN) {

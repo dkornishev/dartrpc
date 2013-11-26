@@ -14,6 +14,10 @@ void main() {
 class ModelInit {
   call(RestfulServer server) {
     server
+      ..onWs("/ws", (data) {
+        print("$data");
+        return "ACK $data";
+      })
       ..onWs("/models", (data) {
         return process(data);
       });
