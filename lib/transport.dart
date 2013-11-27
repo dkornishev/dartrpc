@@ -10,19 +10,32 @@ Map _handlers = {};
 String encode(object) {
   _init();
 
-  return JSON.encode(_ser.write(object));
+  return time("Encoding Time", () => JSON.encode(_ser.write(object)));
 }
 
 Object decode(input) {
   _init();
 
-  return _ser.read(JSON.decode(input));
+  return time("Decoding Time",() => _ser.read(JSON.decode(input)));
+}
+
+time(msg, func) {
+  Stopwatch sw = new Stopwatch();
+  sw.start();
+  var result = func();
+  sw.stop();
+  print("$msg: ${sw.elapsedMilliseconds}");
+
+  return result;
 }
 
 process(data) {
 
     InvocationDTO dto = decode(data);
 
+    var now = new DateTime.now().millisecondsSinceEpoch;
+
+    print("Client -> Server ${ now - dto.requestId}");
     ClassMirror cm = currentMirrorSystem().findLibrary(dto.owner).declarations[dto.type];
 
     if(!_handlers.containsKey(cm.simpleName)) {
@@ -52,7 +65,9 @@ class InvocationDTO {
   List positionalParams = [];
   Map namedParams = {};
 
-  InvocationDTO();
+  InvocationDTO() {
+    requestId = new DateTime.now().millisecondsSinceEpoch;
+  }
 
   InvocationDTO.newInstance(this.owner, this.type, this.function, this.positionalParams, this.namedParams) {
     requestId = new DateTime.now().millisecondsSinceEpoch;
