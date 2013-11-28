@@ -17,7 +17,7 @@ Domain and Service
 Create domain and service classes as you normally would
 
 You MUST add mirrors import with @MirrorsUsed annotation listing all your domain and service classes
-certain optimizations had to be applied which strips mirrored access of everything not explictely 
+as certain optimizations had to be applied which strip mirrored access of everything not explictely 
 stated in such annotations (see: https://code.google.com/p/dart/issues/detail?id=15344)
 ```dart
 @MirrorsUsed(targets: '<your service>, <domain class 1>, <domain class 2> ...', override: '*')
