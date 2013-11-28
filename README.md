@@ -34,7 +34,7 @@ library server_example;
 
 import "package:dartrs/dartrs.dart";
 import 'package:dartrpc/transport.dart';
-import '<your doman and service classes>.dart'; //  dart doesn't "context scan/load all from dir"
+import '<your doman and service classes>.dart'; //  dart doesn't have "context scan/load all from dir"
 
 void main() {
   RestfulServer.bind().then((server) {
