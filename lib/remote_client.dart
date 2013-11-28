@@ -1,7 +1,9 @@
 library remote_client;
 
-import 'dart:html';
+@MirrorsUsed(targets: 'serialization, InvocationDTO, ResponseEnvelope', override: '*')
 import "dart:mirrors";
+
+import 'dart:html';
 import "dart:async";
 
 import "transport.dart";
@@ -37,9 +39,6 @@ class _DynamicProxy {
    *  via websockets
    */
   noSuchMethod(Invocation inv) {
-    var sw = new Stopwatch();
-    sw.start();
-
     var library = reflectClass(_type).owner.simpleName;
     var typeName = reflectClass(_type).simpleName;
 
@@ -57,9 +56,6 @@ class _DynamicProxy {
       _ws.send(encode(command));
 
       _requests[command.requestId] = completer;
-
-      sw.stop();
-      print("SEND ENDED IN: ${sw.elapsedMilliseconds}");
     };
 
     if(_ws.readyState == WebSocket.OPEN) {

@@ -1,5 +1,8 @@
 library app;
 
+@MirrorsUsed(targets: 'ModelProvider, Model, Name', override: '*')
+import "dart:mirrors";
+
 class ModelProvider {
   Iterable<Model> getModels(Model m) {
 

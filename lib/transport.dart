@@ -10,23 +10,13 @@ Map _handlers = {};
 String encode(object) {
   _init();
 
-  return time("Encoding Time", () => JSON.encode(_ser.write(object)));
+  return JSON.encode(_ser.write(object));
 }
 
 Object decode(input) {
   _init();
 
-  return time("Decoding Time",() => _ser.read(JSON.decode(input)));
-}
-
-time(msg, func) {
-  Stopwatch sw = new Stopwatch();
-  sw.start();
-  var result = func();
-  sw.stop();
-  print("$msg: ${sw.elapsedMilliseconds}");
-
-  return result;
+  return _ser.read(JSON.decode(input));
 }
 
 process(data) {
@@ -35,7 +25,6 @@ process(data) {
 
     var now = new DateTime.now().millisecondsSinceEpoch;
 
-    print("Client -> Server ${ now - dto.requestId}");
     ClassMirror cm = currentMirrorSystem().findLibrary(dto.owner).declarations[dto.type];
 
     if(!_handlers.containsKey(cm.simpleName)) {

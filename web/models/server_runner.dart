@@ -1,3 +1,4 @@
+library server_example;
 
 import '../../lib/transport.dart';
 import "package:dartrs/dartrs.dart";
