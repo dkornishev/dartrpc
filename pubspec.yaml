@@ -1,7 +1,11 @@
-name: objectProxy
-description: A sample web application
+name: dartrpc
+author: Danil Kornishev <danil.kornishev@gmail.com>
+version: 0.3.0
+homepage: https://github.com/dkornishev/dartrpc
+description: Framework to transparently run code on the server via client-side proxies over web sockets Given the methodology of "same language on server and client", it is my belief that it should be possible to interact with server-side code using regular language constructs (method invocations).  Dartrpc aims to accomplish this goal.
 dependencies:
   browser: any
   serialization: ">= 0.9.0 < 0.10.0"
+  uuid: ">= 0.2.1 < 0.3.0"
 dev_dependencies:
-  dartrs: any
+  dartrs: 0.7.0

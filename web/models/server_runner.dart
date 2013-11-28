@@ -5,10 +5,8 @@ import "package:dartrs/dartrs.dart";
 import 'model.dart';
 
 void main() {
-  RestfulServer.bind().then((server) {
-    server
-      ..isolates = 16
-      ..isolateInit = new ModelInit();
+  RestfulServer.bind(init: new ModelInit(), concurrency:8).then((server) {
+ 
   });
 }
 

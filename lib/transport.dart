@@ -3,7 +3,9 @@ library remote_shared;
 import "dart:mirrors";
 import "dart:convert";
 import 'package:serialization/serialization.dart';
+import 'package:uuid/uuid.dart';
 
+Uuid _uuid = new Uuid();
 Serialization _ser;
 Map _handlers = {};
 
@@ -47,7 +49,7 @@ _init() {
 }
 
 class InvocationDTO {
-  int requestId;
+  String requestId;
   Symbol owner;
   Symbol type;
   Symbol function;
@@ -55,16 +57,16 @@ class InvocationDTO {
   Map namedParams = {};
 
   InvocationDTO() {
-    requestId = new DateTime.now().millisecondsSinceEpoch;
+    requestId = _uuid.v1();
   }
 
   InvocationDTO.newInstance(this.owner, this.type, this.function, this.positionalParams, this.namedParams) {
-    requestId = new DateTime.now().millisecondsSinceEpoch;
+    requestId = _uuid.v1();
   }
 }
 
 class ResponseEnvelope {
-  int inResponseTo;
+  String inResponseTo;
   Object payload;
 
   ResponseEnvelope();
