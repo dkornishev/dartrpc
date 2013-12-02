@@ -14,12 +14,14 @@ Map _handlers = {};
 
 String encode(object) {
   _init();
+  _log.debug("Encoding: $object");
 
   return JSON.encode(_ser.write(object));
 }
 
 Object decode(input) {
   _init();
+  _log.debug("Decoding: $input");
 
   return _ser.read(JSON.decode(input));
 }
@@ -27,6 +29,8 @@ Object decode(input) {
 process(data) {
 
     InvocationDTO dto = decode(data);
+
+    _log.info("Processing: $dto");
 
     var now = new DateTime.now().millisecondsSinceEpoch;
 
@@ -65,6 +69,10 @@ class InvocationDTO {
 
   InvocationDTO.newInstance(this.owner, this.type, this.function, this.positionalParams, this.namedParams) {
     requestId = _uuid.v1();
+  }
+
+  String toString() {
+    return "[$requestId] $owner->$type->$function($positionalParams, {$namedParams})";
   }
 }
 
