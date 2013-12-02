@@ -2,8 +2,11 @@ library remote_shared;
 
 import "dart:mirrors";
 import "dart:convert";
+import 'package:log4dart/log4dart.dart';
 import 'package:serialization/serialization.dart';
 import 'package:uuid/uuid.dart';
+
+Logger _log = LoggerFactory.getLogger("remote_shared");
 
 Uuid _uuid = new Uuid();
 Serialization _ser;
