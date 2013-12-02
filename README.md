@@ -1,3 +1,4 @@
+[![Build Status](https://drone.io/github.com/dkornishev/dartrpc/status.png)](https://drone.io/github.com/dkornishev/dartrpc/latest)
 Introduction
 ============
 Framework to transparently run code on the server via client-side proxies over web sockets
