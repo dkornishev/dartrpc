@@ -6,7 +6,7 @@ description: Framework to transparently run code on the server via client-side p
 dependencies:
   browser: any
   log4dart: any
-  serialization: '>= 0.9.0 < 0.10.0'
+  serialization: '>= 0.9.1 < 0.10.0'
   uuid: '>= 0.2.1 < 0.3.0'
 dev_dependencies:
   dartrs: 0.7.0
