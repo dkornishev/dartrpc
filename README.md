@@ -1,3 +1,4 @@
+**There is a flaw in the design that makes this library not very useful.  Will be redesigned soon**
 [![Build Status](https://drone.io/github.com/dkornishev/dartrpc/status.png)](https://drone.io/github.com/dkornishev/dartrpc/latest)
 Introduction
 ============
