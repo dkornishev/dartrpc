@@ -34,7 +34,16 @@ process(data) {
 
     var now = new DateTime.now().millisecondsSinceEpoch;
 
-    ClassMirror cm = currentMirrorSystem().findLibrary(dto.owner).declarations[dto.type];
+    var interface = currentMirrorSystem().findLibrary(dto.owner).declarations[dto.type];
+
+    var handlers = [];
+    currentMirrorSystem().libraries.forEach((_, library) {
+      handlers.addAll(library.declarations.values.where((dm) {
+        return dm is ClassMirror && dm.isSubtypeOf(interface) && dm != interface ;
+      }));
+    });
+
+    ClassMirror cm = handlers.first;
 
     if(!_handlers.containsKey(cm.simpleName)) {
      _handlers[cm.simpleName] = cm.newInstance(new Symbol(""), []);

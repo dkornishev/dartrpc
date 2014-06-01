@@ -1,8 +1,10 @@
+library app_client;
+
 import 'dart:html';
+import 'dart:async';
 
 import '../../lib/remote_client.dart';
 import 'model.dart';
-import 'dart:async';
 
 var service;
 void main() {
