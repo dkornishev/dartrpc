@@ -1,4 +1,4 @@
-library remote_client;
+library rpc_client;
 
 @MirrorsUsed(targets: 'serialization, InvocationDTO, ResponseEnvelope', override: '*')
 import "dart:mirrors";

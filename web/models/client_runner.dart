@@ -3,7 +3,7 @@ library app_client;
 import 'dart:html';
 import 'dart:async';
 
-import '../../lib/remote_client.dart';
+import '../../lib/rpc_client.dart';
 import 'model.dart';
 
 var service;
@@ -18,7 +18,7 @@ void loadModels(MouseEvent event) {
 
   sw.start();
   if(service == null)  {
-    service = runRemote(ModelProvider, "ws://127.0.0.1:8080/models");
+    service = runRemote(ModelProvider, "ws://127.0.0.1:8080/rpc");
   }
 
   var model = new Model()
