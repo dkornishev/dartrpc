@@ -18,16 +18,16 @@ void loadModels(MouseEvent event) {
 
   sw.start();
   if(service == null)  {
-    service = runRemote(ModelProvider, "ws://127.0.0.1:8080/rpc");
+    service = runRemote(CarProvider, "ws://127.0.0.1:8080/rpc");
   }
 
-  var model = new Model()
-  ..name = new Name.newInstance("Оксана", "Сергеевна", "Баюл")
-  ..bust = 85.1
-  ..waist = 62
-  ..hips = 85.1;
+  var car1 = new Car();
+  car1.color = "white";
+  car1.name = new Name.newInstance("Honda", "Accord", 2012);
+  car1.vin = "eeeeeeeee";
 
-  service.getModels(model).then((data) {
+
+  service.getCars(car1).then((data) {
     sw.stop();
     querySelector("#sample_text_id").text = "${data.toString()} >> ${sw.elapsedMilliseconds.toString()}\n";
   });

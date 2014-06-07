@@ -1,36 +1,34 @@
 library app;
 
-@MirrorsUsed(targets: 'ModelProvider, Model, Name', override: '*')
+@MirrorsUsed(targets: 'CarProvider, Car, Name', override: '*')
 import "dart:mirrors";
 
-abstract class ModelProvider {
-  Iterable<Model> getModels(Model m);
+abstract class CarProvider {
+  Iterable<Car> getCars(Car m);
 }
 
-class Model {
+class Car {
   Name name;
 
-  double bust;
-  int waist;
-  double hips;
+  String color;
+  String vin;
 
   String toString() {
-    return "$name $bust-$waist-$hips";
+    return "$color $name\n $vin";
   }
 }
 
 class Name {
-  String first;
-  String middle;
-  String last;
+  String make;
+  String model;
+  int year;
 
-  Name() {
 
-  }
+  Name() {  }
 
-  Name.newInstance(this.first, this.middle, this.last);
+  Name.newInstance(this.make, this.model, this.year);
 
   String toString() {
-    return "$last, $first $middle";
+    return "$make $model $year";
   }
 }

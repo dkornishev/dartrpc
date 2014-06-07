@@ -2,21 +2,19 @@ library model_server;
 
 import 'model.dart';
 
-class TestModelProvider implements ModelProvider {
-  Iterable<Model> getModels(Model m) {
+class TestCarProvider implements CarProvider {
 
-    var oksana = new Model()
-      ..name = new Name.newInstance("Oksana", "", "Fedorova")
-      ..bust = 90.1
-      ..waist = 60
-      ..hips = 90.1;
+  Iterable<Car> getCars(Car car) {
+    var car1 = new Car();
+    car1.color = "red";
+    car1.name = new Name.newInstance("Toyota", "Camry", 2002);
+    car1.vin = "ZZZZPPPP";
 
-    var anna = new Model()
-      ..name = new Name.newInstance("Anna", "", "Kurnikova")
-      ..bust = 80.1
-      ..waist = 50
-      ..hips = 80.1;
+    var car2 = new Car();
+    car2.color = "blue";
+    car2.name = new Name.newInstance("Lada", "Kalina", 2002);
+    car2.vin = "UUUUUUUUo";
 
-    return [anna, oksana, m];
+    return [car1, car2, car];
   }
 }
