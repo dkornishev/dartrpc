@@ -1,13 +1,10 @@
-**There is a flaw in the design that makes this library not very useful.  Will be redesigned soon**
 [![Build Status](https://drone.io/github.com/dkornishev/dartrpc/status.png)](https://drone.io/github.com/dkornishev/dartrpc/latest)
 Introduction
 ============
 Framework to transparently run code on the server via client-side proxies over web sockets
 
-Given the methodology of "same language on server and client", it is my belief that it should be
-possible to interact with server-side code using regular language constructs (method invocations).
+Dartrpc makes it possible to interact with server-side code using regular language constructs (method invocations).
 
-Dartrpc aims to accomplish this goal.
 
 Usage
 =====
@@ -19,8 +16,9 @@ Domain and Service
 Create domain and service classes as you normally would
 
 You MUST add mirrors import with @MirrorsUsed annotation listing all your domain and service classes
-as certain optimizations had to be applied which strip mirrored access of everything not explictely 
+as certain optimizations had to be applied which strip mirrored access of everything not explicitely 
 stated in such annotations (see: https://code.google.com/p/dart/issues/detail?id=15344)
+Library did work without these annotations, but generated JS was > 5 mb
 ```dart
 @MirrorsUsed(targets: '<your service>, <domain class 1>, <domain class 2> ...', override: '*')
 import "dart:mirrors";
@@ -28,32 +26,10 @@ import "dart:mirrors";
 
 Server
 ------
-Create a server with a web socket endpoint that invokes 'process' library function.  
+Import model and provider classes.  Instantiate RPCServer
 
-Example below uses dartrs:
 ```dart
-library server_example;
-
-import "package:dartrs/dartrs.dart";
-import 'package:dartrpc/transport.dart';
-import '<your doman and service classes>.dart'; //  dart doesn't have "context scan/load all from dir"
-
-void main() {
-  RestfulServer.bind().then((server) {
-    server
-      ..isolates = 16
-      ..isolateInit = new ModelInit();
-  });
-}
-
-class ModelInit {
-  call(RestfulServer server) {
-    server
-      ..onWs("/models", (data) {
-        return process(data);
-      });
-  }
-}
+var server = new RPCServer();
 ```
 
 Client
@@ -64,8 +40,8 @@ Note the proxy object returns Futures for all invocations.
 ```dart
 import 'package:dartrpc/remote_client.dart';
 
-var service = runRemote(ModelProvider, "ws://127.0.0.1:8080/models");
-service.getModels().then((response) {
+var service = runRemote(CarProvider, "ws://127.0.0.1:8080/rpc");
+service.getCars().then((response) {
   //... do something with response
 });
 ```
@@ -76,8 +52,7 @@ See web/models
 
 Performance
 ===========
-Quite acceptable, and hopefully will continue to improve as dart and dart2js is improved
-On my machine, provided example takes between 16 and ~50 ms.
+On my machine after a few calls drops to 15-20 ms range.  Initial 2-3 calls are rather slow.
 
 Framework Integration
 =====================
